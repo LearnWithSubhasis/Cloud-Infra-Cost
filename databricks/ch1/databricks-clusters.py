@@ -4,7 +4,7 @@ from pprint import pprint
 
 from databricks_cli.clusters.api import ClusterApi
 from databricks_cli.sdk.api_client import ApiClient
-from obfuscate_op import o2
+from obfuscate_op import o, o2
 
 #os.environ["DATABRICKS_HOST"] = "https://xyz.azuredatabricks.net"
 #os.environ["DATABRICKS_TOKEN"] = "dapi..."
@@ -22,10 +22,9 @@ cluster_ids = []
 print("Cluster name, cluster ID")
 for cluster in clusters_list['clusters']:
   pprint(o2(clusters_api.get_cluster_by_name(cluster['cluster_name'])))
-  cluster_ids.append(cluster['cluster_id'])
-#pprint(cluster['autoscale'])
-#pprint(cluster)
+  cluster_ids.append(o(cluster['cluster_id']))
 
-print(cluster_ids)
+print("-------- Total Clusters -----------")
+print(len(cluster_ids))
 
 

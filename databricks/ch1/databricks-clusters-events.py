@@ -2,7 +2,7 @@ import os
 from pprint import pprint
 
 from databricks_api import DatabricksAPI
-from obfuscate_op import o2
+from obfuscate_op import o2, o3
 
 #os.environ["DATABRICKS_HOST"] = "https://xyz.azuredatabricks.net"
 #os.environ["DATABRICKS_TOKEN"] = "dapi..."
@@ -19,11 +19,19 @@ pprint(o2(clusters))
 print("==============================")
 #https://docs.databricks.com/dev-tools/api/latest/clusters.html
 cluster_events = db.cluster.get_events(
-    cluster_id='1106-020702-jsryux37',
-    event_types=['RUNNING', 'RESIZING', 'TERMINATING'],
-    offset=250,
-    limit=100,
-    order='ASC',
+    cluster_id=o3('4106-080702-jrryux37'),
+    #event_types=['RUNNING', 'RESIZING', 'TERMINATING'],
+    #offset=None,
+    #limit=None,
+    #order='DESC',
 )
+
+# cluster_events = db.cluster.get_events(
+#     cluster_id=o3('4106-080702-jrryux37'),
+#     #event_types=['RUNNING', 'RESIZING', 'TERMINATING'],
+#     offset=250,
+#     limit=100,
+#     order='ASC',
+# )
 
 pprint(o2(cluster_events))
