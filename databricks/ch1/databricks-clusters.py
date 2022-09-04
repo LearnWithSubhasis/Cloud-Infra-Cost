@@ -17,12 +17,15 @@ api_client = ApiClient(
 clusters_api = ClusterApi(api_client)
 clusters_list = clusters_api.list_clusters()
 
+cluster_ids = []
+
 print("Cluster name, cluster ID")
 for cluster in clusters_list['clusters']:
   pprint(o2(clusters_api.get_cluster_by_name(cluster['cluster_name'])))
-
-# cluster = clusters_api.get_cluster_by_name('DS 9.1 ML HC - Small')
+  cluster_ids.append(cluster['cluster_id'])
 #pprint(cluster['autoscale'])
 #pprint(cluster)
+
+print(cluster_ids)
 
 

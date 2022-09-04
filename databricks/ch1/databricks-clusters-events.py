@@ -21,9 +21,6 @@ print("==============================")
 cluster_events = db.cluster.get_events(
     cluster_id='1106-020702-jsryux37',
     event_types=['RUNNING', 'RESIZING', 'TERMINATING'],
-
-    #limit=500,
-    #offset=50
     offset=250,
     limit=100,
     order='ASC',
