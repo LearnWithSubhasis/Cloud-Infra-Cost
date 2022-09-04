@@ -4,7 +4,7 @@ For Azure DataBricks
 ## Objectives
 We will find out in a DataBricks workspace:
 >
-1. Details about all DataBricks clusters are available (UI / Interactive, Job / Ephemeral)
+1. Details about all DataBricks clusters available (UI / Interactive, Job / Ephemeral) under DataBricks Workspace
 > 
 2. Details of all jobs scheduled (Name, Schedule, etc.)
 > 
