@@ -2,7 +2,7 @@
 For Azure DataBricks
 
 ## Objectives
-#### A. We will find out in a DataBricks workspace:
+#### A. We know how to find out in a DataBricks workspace:
 >
 1. Details about all DataBricks clusters available (UI / Interactive, Job / Ephemeral) under DataBricks Workspace
 > 
