@@ -33,6 +33,8 @@ for cluster in clusters['clusters']:
     page_size = 500
     offset = 0
     limit = page_size
+    prev_cluster_min_workers = 0
+    prev_cluster_max_workers = 0
 
     cluster_id = cluster['cluster_id']
     print(cluster_id)
@@ -63,24 +65,35 @@ for cluster in clusters['clusters']:
                 target_num_workers = (cluster_state == 'RUNNING' or cluster_state == 'RESIZING') \
                                       and cluster_event['details']['target_num_workers'] or 0
 
+                cluster_min_workers = (cluster_state == 'RESIZING' and 'autoscale' in cluster_event['details']['cluster_size'].keys()) \
+                                      and cluster_event['details']['cluster_size']['autoscale']['min_workers'] or prev_cluster_min_workers
+                cluster_max_workers = (cluster_state == 'RESIZING' and 'autoscale' in cluster_event['details']['cluster_size'].keys()) \
+                                      and cluster_event['details']['cluster_size']['autoscale']['max_workers'] or prev_cluster_max_workers
+
+                cluster_min_workers = (cluster_state == 'TERMINATING') and 0 or cluster_min_workers
+                cluster_max_workers = (cluster_state == 'TERMINATING') and 0 or cluster_max_workers
+
+                if cluster_min_workers > 0 and prev_cluster_min_workers == 0:
+                    prev_cluster_min_workers = cluster_min_workers
+
+                if cluster_max_workers > 0 and prev_cluster_max_workers == 0:
+                    prev_cluster_max_workers = cluster_max_workers
+
                 cluster_event_obj = tables.DBricksClusterEvents (
-                    cluster_event_no = counter,
-                    cluster_id = cluster_event['cluster_id'],
-                    timestamp = cluster_event['timestamp'],
-                    timestamp_dt = datetime.datetime.fromtimestamp(int(cluster_event['timestamp']/1000)),
-                    cluster_state = cluster_state,
-                    cluster_status_flag = cluster_state == 'TERMINATING' and False or True,
-                    current_num_workers = current_num_workers,
-                    target_num_workers = target_num_workers,
-                    cluster_min_workers = (cluster_state == 'RESIZING' and 'autoscale' in cluster_event['details']['cluster_size'].keys())
-                                          and cluster_event['details']['cluster_size']['autoscale']['min_workers'] or 0,
-                    cluster_max_workers = (cluster_state == 'RESIZING' and 'autoscale' in cluster_event['details']['cluster_size'].keys())
-                                          and cluster_event['details']['cluster_size']['autoscale']['max_workers'] or 0,
-                )
+                        cluster_event_no = counter,
+                        cluster_id = cluster_event['cluster_id'],
+                        timestamp = cluster_event['timestamp'],
+                        timestamp_dt = datetime.datetime.fromtimestamp(int(cluster_event['timestamp']/1000)),
+                        cluster_state = cluster_state,
+                        cluster_status_flag = cluster_state == 'TERMINATING' and False or True,
+                        current_num_workers = current_num_workers,
+                        target_num_workers = target_num_workers,
+                        cluster_min_workers = cluster_min_workers,
+                        cluster_max_workers = cluster_max_workers,
+                    )
                 counter = counter+1
                 session.add(cluster_event_obj)
 
-            #session.commit()
 
             if 'next_page' in cluster_events.keys():
                 next_page_exists = True
