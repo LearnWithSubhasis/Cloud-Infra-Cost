@@ -43,8 +43,8 @@ class DBricksJobs(Base):
 
    job_name = Column(String(100))
    existing_cluster_id = Column(String(30))
-   created_time = Column(BigInteger)
-   creator_user_name = Column(String(50))
+   job_created_time = Column(BigInteger)
+   job_creator_user_name = Column(String(50))
    pause_status = Column(String(20))
    quartz_cron_expression = Column(String(20))
    schedule_desc = Column(String(50))

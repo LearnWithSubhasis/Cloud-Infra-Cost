@@ -61,9 +61,9 @@ for job in jobs_list['jobs']:
     job_obj = tables.DBricksJobs (
         job_id = job['job_id'],
         job_name = job['settings']['name'],
-        creator_user_name = 'creator_user_name' in job.keys() and job['creator_user_name'] or None,
+        job_creator_user_name = 'creator_user_name' in job.keys() and job['creator_user_name'] or None,
         existing_cluster_id = 'existing_cluster_id' in job['settings'].keys() and job['settings']['existing_cluster_id'] or None,
-        created_time=job['created_time'],
+        job_created_time=job['created_time'],
         pause_status = 'schedule' in job['settings'].keys() and job['settings']['schedule']['pause_status'] or None,
         quartz_cron_expression = quartz_cron_expression,
         schedule_desc = schedule_desc,
