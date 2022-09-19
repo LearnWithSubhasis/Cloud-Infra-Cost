@@ -25,7 +25,7 @@ index = 0
 
 
 def fill_empty_events(from_time, to_time, counter, session, cluster_event, prev_cluster_min_workers, prev_cluster_max_workers):
-    incr_time_step = 15 * 1000 #15 sec
+    incr_time_step = 60 * 60 * 1000 #1 hour
     next_event_ts = from_time + incr_time_step
     while next_event_ts < to_time:
         cluster_event_obj = tables.DBricksClusterEvents(
@@ -33,8 +33,8 @@ def fill_empty_events(from_time, to_time, counter, session, cluster_event, prev_
             cluster_id=cluster_event['cluster_id'],
             timestamp=next_event_ts,
             timestamp_dt=datetime.datetime.fromtimestamp(int(next_event_ts/1000)),
-            cluster_state=cluster_state,
-            cluster_status_flag=cluster_state == 'TERMINATING' and False or True,
+            cluster_state='TERMINATED',
+            cluster_status_flag=False,
             current_num_workers=0,
             target_num_workers=0,
             cluster_min_workers=prev_cluster_min_workers,
