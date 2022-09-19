@@ -2,8 +2,10 @@ databricks-api
 databricks-cli
 cron-descriptor
 sqlalchemy
-mysql
+pymysql
 mysql-connector-python
+
+
 
 
 
