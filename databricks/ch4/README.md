@@ -10,7 +10,9 @@ For Azure DataBricks
 > 
 3. Correlating information between clusters and jobs, to find out which jobs are run against which clusters
 >
-4. Jobs run history, run time 
+4. Jobs run history, run time
+>
+5. Cluster Events
 
 #### B. Push the information into Database (MySQL) tables
 
@@ -29,7 +31,11 @@ For Azure DataBricks
 > jobs -> databricks_jobs
 > 
 > cluster - jobs ->  databricks_cluster_jobs
-
+> 
+> cluster - events -> databricks_cluster_events
+> 
+> jobs -> run history -> databricks_jobs_run
+> 
 ### Step 2: Set required environment variables
 > export DATABRICKS_HOST="https://xyz.azuredatabricks.net"
 
@@ -41,6 +47,10 @@ For Azure DataBricks
 > python databricks-jobs.py
 
 > python databricks-e2e-v1-cluster-jobs.py
+
+> python databricks-clusters-events-v2.py
+
+> python databricks-jobs-run.py
 
 
 ### References
