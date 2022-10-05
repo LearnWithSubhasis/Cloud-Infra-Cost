@@ -1,3 +1,5 @@
+USE cloud_infra_db_ch4;
+
 INSERT INTO `databricks_sku_price`
 (`sku`,
 `hourly_price`,

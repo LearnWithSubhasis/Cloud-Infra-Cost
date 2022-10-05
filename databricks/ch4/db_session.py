@@ -7,9 +7,6 @@ import os
 #os.environ["DATABRICKS_HOST"] = "https://xyz.azuredatabricks.net"
 #os.environ["DATABRICKS_TOKEN"] = "dapi..."
 
-os.environ["DATABRICKS_HOST"]="https://adb-3720311585959435.15.azuredatabricks.net"
-os.environ["DATABRICKS_TOKEN"]="dapi866fb0277ee7a6a815481d98536e5f9e"
-
 '''
 Singleton Class for MySQL Database session
 '''
@@ -36,7 +33,7 @@ class mysql_session:
 
     @staticmethod
     def __init_db_session(self):
-        self.engine = create_engine("mysql+mysqlconnector://cloud_infra_user:cloud_infra_pass@localhost/cloud_infra_db",
+        self.engine = create_engine("mysql+mysqlconnector://cloud_infra_user_ch4:cloud_infra_pass@localhost/cloud_infra_db_ch4",
                                echo=True)
 
         conn = self.engine.connect()
