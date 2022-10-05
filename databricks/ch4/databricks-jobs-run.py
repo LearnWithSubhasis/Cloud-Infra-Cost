@@ -37,7 +37,7 @@ for job in jobs['jobs']:
 
     counter = 1
     next_page_exists = True
-    page_size = 500
+    page_size = 10
     offset = 0
     limit = page_size
 
@@ -51,37 +51,14 @@ for job in jobs['jobs']:
         version=None,
     )
 
+    pprint(job_runs)
+
     while next_page_exists is True:
         next_page_exists = False
         if job_runs is not None and 'runs' in job_runs.keys():
             runs = job_runs['runs']
             for job_run in runs:
                 job_run_status_str = job_run['state']['life_cycle_state']
-
-                # start_time = job_run['start_time'] - 1
-                # end_time = job_run['end_time'] + 1
-                # job_run_obj = tables.DBricksJobsRun(
-                #     run_event_no=counter,
-                #     job_id=job_run['job_id'],
-                #     run_id=job_run['run_id'],
-                #     job_run_name=job_run['run_name'],
-                #     # job_cluster_id='cluster_instance' in job_run.keys() and job_run['cluster_instance']['cluster_id'] or 'NA',
-                #     job_start_time=start_time,
-                #     job_start_time_dt=datetime.datetime.fromtimestamp(int(start_time / 1000)),
-                #     job_end_time=job_run['start_time'],
-                #     job_end_time_dt=datetime.datetime.fromtimestamp(int(start_time / 1000)),
-                #     job_execution_duration=0,
-                #     job_setup_duration=0,
-                #     job_result_state='NA',
-                #     job_life_cycle_state='NA',
-                #     job_is_running=False,
-                #     job_state_message='NA',
-                #     job_user_cancelled_or_timeout=False,
-                #     job_run_page_url='NA',
-                #     job_run_type='NA',
-                # )
-                # counter = counter + 1
-                # session.add(job_run_obj)
 
                 job_run_obj = tables.DBricksJobsRun (
                     run_event_no=counter,
@@ -106,51 +83,6 @@ for job in jobs['jobs']:
                 counter = counter + 1
                 session.add(job_run_obj)
 
-                # job_run_obj = tables.DBricksJobsRun (
-                #     run_event_no=counter,
-                #     job_id=job_run['job_id'],
-                #     run_id=job_run['run_id'],
-                #     job_run_name=job_run['run_name'],
-                #     #job_cluster_id='cluster_instance' in job_run.keys() and job_run['cluster_instance']['cluster_id'] or 'NA',
-                #     job_start_time=job_run['end_time'],
-                #     job_start_time_dt=datetime.datetime.fromtimestamp(int(job_run['end_time'] / 1000)),
-                #     job_end_time=job_run['end_time'],
-                #     job_end_time_dt=datetime.datetime.fromtimestamp(int(job_run['end_time'] / 1000)),
-                #     job_execution_duration=job_run['execution_duration']/60000,
-                #     job_setup_duration=job_run['setup_duration']/60000,
-                #     job_result_state=job_run['state']['result_state'],
-                #     job_life_cycle_state=job_run_status_str,
-                #     job_is_running=True,
-                #     job_state_message=job_run['state']['state_message'],
-                #     job_user_cancelled_or_timeout='user_cancelled_or_timeout' in job_run['state'].keys() and job_run['state']['user_cancelled_or_timeout'] or False,
-                #     job_run_page_url=job_run['run_page_url'],
-                #     job_run_type=job_run['run_type'],
-                # )
-                # counter = counter + 1
-                # session.add(job_run_obj)
-                #
-                # job_run_obj = tables.DBricksJobsRun(
-                #     run_event_no=counter,
-                #     job_id=job_run['job_id'],
-                #     run_id=job_run['run_id'],
-                #     job_run_name=job_run['run_name'],
-                #     # job_cluster_id='cluster_instance' in job_run.keys() and job_run['cluster_instance']['cluster_id'] or 'NA',
-                #     job_start_time=end_time,
-                #     job_start_time_dt=datetime.datetime.fromtimestamp(int(end_time / 1000)),
-                #     job_end_time=end_time,
-                #     job_end_time_dt=datetime.datetime.fromtimestamp(int(end_time / 1000)),
-                #     job_execution_duration=0,
-                #     job_setup_duration=0,
-                #     job_result_state='NA',
-                #     job_life_cycle_state='NA',
-                #     job_is_running=False,
-                #     job_state_message='NA',
-                #     job_user_cancelled_or_timeout=False,
-                #     job_run_page_url='NA',
-                #     job_run_type='NA',
-                # )
-                # counter = counter + 1
-                # session.add(job_run_obj)
 
             if 'has_more' in job_runs.keys() and job_runs['has_more'] == True:
                 next_page_exists = True
