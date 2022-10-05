@@ -9,6 +9,8 @@ For Azure DataBricks
 2. Details of all jobs scheduled (Name, Schedule, etc.)
 > 
 3. Correlating information between clusters and jobs, to find out which jobs are run against which clusters
+>
+4. Jobs run history, run time 
 
 #### B. Push the information into Database (MySQL) tables
 
@@ -48,7 +50,11 @@ For Azure DataBricks
 
 > https://dev.mysql.com/doc/refman/8.0/en/macos-installation-pkg.html
 
-> https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/
+> https://hub.docker.com/r/apache/superset
+
+> For Apple M1/M2 Processors:
+> >docker run -d -p 8080:8088 --name superset --platform linux/amd64 apache/superset
+ 
 
 
 
