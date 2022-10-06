@@ -20,6 +20,7 @@ session = mysql_session.get_db_session()
 def get_jobs() -> dict:
     jobs_api = JobsApi(api_client)
     jobs_list = jobs_api.list_jobs()
+
     jobs_dict = {}
     cluster_jobs_dict = {}
 

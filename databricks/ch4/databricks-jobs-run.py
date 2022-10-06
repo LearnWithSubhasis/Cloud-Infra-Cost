@@ -37,7 +37,7 @@ for job in jobs['jobs']:
 
     counter = 1
     next_page_exists = True
-    page_size = 10
+    page_size = 500
     offset = 0
     limit = page_size
 
@@ -50,8 +50,9 @@ for job in jobs['jobs']:
         headers=None,
         version=None,
     )
+    job_runs = o2(job_runs)
 
-    pprint(job_runs)
+    #pprint(job_runs)
 
     while next_page_exists is True:
         next_page_exists = False
@@ -84,23 +85,22 @@ for job in jobs['jobs']:
                 session.add(job_run_obj)
 
 
-            if 'has_more' in job_runs.keys() and job_runs['has_more'] == True:
-                next_page_exists = True
-                offset = job_runs['next_page']['offset']
-                limit = job_runs['next_page']['limit']
-                job_runs = db.jobs.list_runs(
-                    job_id=job_id,
-                    active_only=None,
-                    completed_only=None,
-                    offset=offset,
-                    limit=limit,
-                    headers=None,
-                    version=None,
-                )
+        if 'has_more' in job_runs.keys() and job_runs['has_more'] == True:
+            next_page_exists = True
+            offset = offset + limit
+            job_runs = db.jobs.list_runs(
+                job_id=None,
+                active_only=None,
+                completed_only=None,
+                offset=offset,
+                limit=limit,
+                headers=None,
+                version=None,
+            )
 
-                job_runs = o2(job_runs)
-            else:
-                next_page_exists = False
+            job_runs = o2(job_runs)
+        else:
+            next_page_exists = False
 
     session.commit()
 session.commit()
