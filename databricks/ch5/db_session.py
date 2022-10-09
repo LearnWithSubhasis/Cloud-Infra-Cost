@@ -3,14 +3,13 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
-# DataBricks HOST & TOKEN
+'''
+Singleton Class for MySQL Database session
+'''
 #os.environ["DATABRICKS_HOST"] = "https://xyz.azuredatabricks.net"
 #os.environ["DATABRICKS_TOKEN"] = "dapi..."
 
 
-'''
-Singleton Class for MySQL Database session
-'''
 class mysql_session:
     __shared_instance = None
     session = None
