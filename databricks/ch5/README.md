@@ -31,7 +31,13 @@ For Azure DataBricks
 > jobs -> databricks_jobs
 > 
 > cluster - jobs ->  databricks_cluster_jobs
-
+> 
+> cluster - events -> databricks_cluster_events
+> 
+> jobs -> run history -> databricks_jobs_run
+> 
+> jobs & cluster -> databricks_cost_analysis
+> 
 ### Step 2: Set required environment variables
 > export DATABRICKS_HOST="https://xyz.azuredatabricks.net"
 
@@ -42,8 +48,9 @@ For Azure DataBricks
 
 > python databricks-jobs.py
 
-> python databricks-e2e-v1-cluster-jobs.py
+> python databricks-jobs-run.py
 
+> python databricks-clusters-events-v2.py
 
 ### References
 > https://docs.databricks.com/dev-tools/api/latest/clusters.html 
@@ -52,7 +59,9 @@ For Azure DataBricks
 
 > https://dev.mysql.com/doc/refman/8.0/en/macos-installation-pkg.html
 
-> https://superset.apache.org/docs/installation/installing-superset-using-docker-compose/
+> https://hub.docker.com/r/apache/superset
 
-
+> For Apple M1/M2 Processors:
+> >docker run -d -p 8080:8088 --name superset --platform linux/amd64 apache/superset
+ 
 
