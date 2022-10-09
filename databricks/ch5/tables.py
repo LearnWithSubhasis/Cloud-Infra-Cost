@@ -122,5 +122,19 @@ class DBricksJobsRun(Base):
    job_cluster_id = Column(String(30), ForeignKey("databricks_clusters.cluster_id"))
    job_is_running = Column(Boolean)
 
+
+class DBricksCostAnalysis(Base):
+   __tablename__ = 'databricks_cost_analysis'
+   __table_args__ = (
+      PrimaryKeyConstraint('job_run_name', 'node_type_id', 'job_start_time_dt'),
+   )
+   job_run_name = Column(String(100))
+   node_type_id = Column(String(30))
+   job_start_time_dt = Column(DateTime)
+   diff = Column(Integer)
+   diff_round_up = Column(Integer)
+   job_start_datetime_15_min_interval = Column(DateTime)
+   max_workers = Column(Integer)
+
 Base.metadata.create_all(engine)
 
