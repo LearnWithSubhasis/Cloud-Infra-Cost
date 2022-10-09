@@ -4,9 +4,9 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, BigInteger
 from db_session import mysql_session
 
 """
-CREATE DATABASE cloud_infra_db CHARACTER SET utf8;
--- CREATE USER 'cloud_infra_user' IDENTIFIED BY 'cloud_infra_pass';
-GRANT ALL PRIVILEGES ON cloud_infra_db.* TO 'cloud_infra_user';
+CREATE DATABASE cloud_infra_db_ch5 CHARACTER SET utf8;
+CREATE USER 'cloud_infra_user_ch5' IDENTIFIED BY 'cloud_infra_pass';
+GRANT ALL PRIVILEGES ON cloud_infra_db_ch5.* TO 'cloud_infra_user_ch5';
 """
 
 """
