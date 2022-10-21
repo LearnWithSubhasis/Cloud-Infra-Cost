@@ -9,6 +9,9 @@ import tables
 #os.environ["DATABRICKS_HOST"] = "https://xyz.azuredatabricks.net"
 #os.environ["DATABRICKS_TOKEN"] = "dapi..."
 
+TENANT_PATTERN = None
+
+
 # Provide a host and token
 db = DatabricksAPI(
     host=os.getenv("DATABRICKS_HOST"),
@@ -56,22 +59,6 @@ def create_cluster_events(job_start_time, job_end_time, cluster_id, min_workers)
         session.add(cluster_event_obj)
         session.commit()
 
-
-'''
- 'cluster_instance': {'cluster_id': '0906-180704-cf0518b6',
-                      'spark_context_id': '2592005139220461570'},
- 'cluster_spec': {'libraries': [{'jar': 'dbfs:/etl/int/lib/euclid-etl-tasks-gb-az-1.0.143.jar'}],
-                  'new_cluster': {'azure_attributes': {'availability': 'ON_DEMAND_AZURE'},
-                                  'cluster_log_conf': {'dbfs': {'destination': 'dbfs:/mnt/spark-logs/gb/2022-09-06/ciduswoverridehandlerwithlocking'}},
-                                  'custom_tags': {'Smart_ID': 'SF_GB'},
-                                  'enable_elastic_disk': True,
-                                  'node_type_id': 'Standard_D16s_v3',
-                                  'num_workers': 1,
-                                  'spark_env_vars': {'AZURE_CLIENT_ID': '{{secrets/euclid-ccm/AZURE_CLIENT_ID}}',
-                                                     'AZURE_CLIENT_SECRET': '{{secrets/euclid-ccm/AZURE_CLIENT_SECRET}}',
-                                                     'AZURE_TENANT_ID': '{{secrets/euclid-ccm/AZURE_TENANT_ID}}'},
-                                  'spark_version': 'apache-spark-2.4.x-esr-scala2.11'}},
-'''
 def upsert_cluster_info(job_run):
     cluster_id = job_run['cluster_instance']['cluster_id']
     existing_cluster = True
@@ -137,6 +124,7 @@ def upsert_job_info(job_run, cluster_id):
     return job_id, existing_cluster
 
 
+dict_params = []
 def check_if_valid_run(job_run, tenant_pattern=None):
     if tenant_pattern is None or len(tenant_pattern) == 0:
         return True
@@ -144,12 +132,14 @@ def check_if_valid_run(job_run, tenant_pattern=None):
     job_params = 'spark_jar_task' in job_run['task'].keys() and job_run['task']['spark_jar_task']['parameters'] or None
     if job_params is not None:
         for job_param in job_params:
+            if job_param not in dict_params:
+                dict_params.append(job_param)
+
             if tenant_pattern in job_param:
                 return True
     return False
 
 
-TENANT_PATTERN = 'cn'
 counter = 1
 next_page_exists = True
 page_size = 500
@@ -167,7 +157,6 @@ job_runs = db.jobs.list_runs(
 )
 
 while next_page_exists is True:
-    offset = offset + page_size
     next_page_exists = False
     if job_runs is not None and 'runs' in job_runs.keys():
         runs = job_runs['runs']
@@ -214,6 +203,8 @@ while next_page_exists is True:
 
     if 'has_more' in job_runs.keys() and job_runs['has_more'] is True:
         next_page_exists = True
+        offset = offset + page_size
+
         job_runs = db.jobs.list_runs(
             job_id=None,
             active_only=None,
@@ -413,5 +404,7 @@ while next_page_exists is True:
 #     session.commit()
 # session.commit()
 
-
+for param in dict_params:
+    if 'euclid-etl-' in param:
+        print(param)
 
